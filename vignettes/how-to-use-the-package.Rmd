@@ -1,0 +1,877 @@
+---
+title: "Package AmoRosoDistrib"
+author: "Hon Keung Tony Ng and Catherine Combes"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to use the package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The package \pkg{AmoRosoDistrib} provides functions for fitting four-parameter Generalized Gamma univariate distribution to different types of data (continuous non-censored  non-truncated data and discrete data) from nine different approaches based on the maximum likelihood estimation method and the minimum distance estimation (MDE) method.
+The goal of this document is get you up and running with the AmoRosoDistrib as quickly as possible.
+
+
+## Introduction
+
+Generalized Gamma distribution is often called a Amoroso family of df's (Amoroso, 1925)
+because it encompasses the natural unification of the gamma and extreme value
+distribution families. It has initially be described by Amoroso in 1925 who
+applied it to fit income rates and to model lifetimes. The form commonly used in
+practice was suggested by Stacy (1962), Stacy and Minhram (1965) and corresponds 
+to three-parameter exponentiated gamma distribution. Harter (1967) proposes the
+four-parameter Generalized Gamma in including location parameter.
+
+This distribution is robust and flexible parametric distribution for modeling many types of data.
+
+Amoroso family distributions cover over 50 distinct distributions and can
+be considered as a functional form encapsulating and systematizing an
+extensive menagerie of interesting and common probability distributions.
+
+One of the most interesting problems is constructing the distributions, which are appropriate for fitting skewed and heavy-tailed data sets which are possible with GG4-Distribution. More, the GG4 family includes all four of the most common types of hazard function: monotonically increasing and decreasing, as well as bathtub and arc-shaped hazards used in survival analysis. 
+So, the GG-distribution has long been recognized as an important probability distribution in reliability modelling, analysis of lifetimes and the flexibility makes it especially attractive as a tentative model observed phenomena.
+
+The form commonly used in practice was suggested by Stacy (1962), Stacy and Minhram
+(1965) corresponds to three-parameter exponentiated gamma distribution. Harter (1967)
+proposes the four-parameter generalized gamma distribution in including location
+parameter.
+
+The package proposes density, distribution function, quantile function, random generation  and hazards for the generalized gamma distribution (called GG4), using the parameterisation originating from Amoroso (1925). It also proposes a method based on minimum distance estimation problem for estimate the four-parameters from an univariate population (non-censored non-truncated data).
+
+## Notations
+
+Let be $Y$, a random variable that follows a so-called four-parameter Generalized Gamma distribution $GG4$ ($a$,$\ell$,$c$,$\mu$) introduced by Amoroso (1925).
+A GG4-distribution is the absolutely continuous distribution defined by the probability density function (pdf):
+\begin{eqnarray}
+g(y; a, \ell, c, \mu) & = &  \frac{1}{\Gamma(\ell)} \left\vert \frac{c}{a} \right\vert \left( \frac{y - \mu}{a} \right)^{\ell c - 1} \exp \left[ - \left( \frac{y - \mu}{a}  \right)^{c} \right] (1) 
+\label{pdfgg4}
+\end{eqnarray}
+
+The  cumulative distribution function is given by:
+$$G_Y(y) = P[Y \leq y ]= 1-\frac{\gamma \left( \ell, \left(\frac{y - \mu}{a}\right)^c \right)}{\Gamma(l)} (2)$$
+Where
+
+* $\ell \in \mathbb{R}^{+}$ is the shape parameter,
+
+* $c \in \mathbb{R} \backslash \{0\}$ is the shape parameter called family or power shape parameter,
+
+* $a \in \mathbb{R} \backslash \{0\}$ is the scale parameter,
+
+* $\mu \in (-\infty, \infty)$ is the location parameter,
+
+* $\Gamma(.)$ is the gamma function defined by: $\int_0^\infty y^{\ell-1} e^{-y}dy$
+
+* $\gamma(.,.)$ is the lower incomplete gamma function.
+
+
+The support of the distribution is:  
+\begin{eqnarray*}
+\begin{cases} 
+y \geq \mu & {\mbox {if }} a > 0,  \\
+y \leq \mu & {\mbox {if }} a < 0. 
+\end{cases} 
+\end{eqnarray*}
+We denote this distribution as GG4($a, \ell, c, \mu$) distribution. Note that the PDF in Eq. (1) is used in Crocks (2015), while the probability distribution is defined for $a > 0$ and the support of the distribution is $\mu < y < \infty$ in the original paper by Amoroso \cite{Amoroso1925}. 
+
+## Amoroso family distributions
+
+When the power shape parameter **$c$** is negative, the distribution becomes a generalized inverse gamma. 
+The parent of various inverse distributions include the Pearson V (inverse Pearson III) and inverse gamma, the inverse chi family, the inverse Rayleigh and the generalized Fréchet. Crocks (2015) presents a review of important properties of the Amoroso distribution that many common and interesting probability distributions occur as special cases or limits (such as power law, log-gamma, log-normal and normal distributions). See also (Jonshon et al.,1995).
+
+So, the four-parameter Generalized Gamma distribution (GGD4) is a very popular distribution because it includes many well-known distributions and have been a great interest in practical applications.
+
+## Distribution of transformed random variables
+
+Suppose $Y$ follows the GG4($a, \ell, c, \mu = 0$) distribution, then we have:
+
+* $X = Y^s \sim$ \gam$\left(a^s, \ell, c/s, 0 \right)$;
+
+* $Z = \omega Y \sim$ \gam $\left(\omega a, \ell, c, 0 \right)$;
+
+* $W = Y^c \sim$ \gam$\left(a^c, \ell, 1, 0 \right)$ (i.e., a two-parameter gamma distribution with scale parameter $a^{c}$ and shape parameter $\ell$); 
+
+* If $V$ follows a two-parameter gamma distribution with scale parameter $1$ and shape parameter $\ell$, then $Y = a V^\frac{1}{c} + \mu \sim$ \gam$(a, \ell, c, \mu)$. 
+
+This last property provides a simple way to generate a random sample of GG4 distribution in using the quantile function of the two-parameter gamma distribution $\Gamma(1,\ell)$.
+
+
+## GG4 functions
+
+### Description
+Probability distribution functions (p), density functions (d), quantile functions (q), and random number generation (r) generation for univariate parametric distribution of the four-parameter generalized Gamma (GG4) with location, scale and shape parameters (non-censoed and non-truncated).
+
+### Value
+* **dgg4** gives the density function, 
+* **pgg4** gives the distribution function, 
+* **qgg4** gives the quantile function, 
+* **rgg4** generates random deviates. 
+
+We also propose hgg4 representing the hazard function and chgg4 corresponding to the cumulative hazard function.
+
+GG4-samples (rgg4) are generated by using the property:
+
+If $W \sim \Gamma \left( 1,\ell \right)$ then 
+$Y = aW^\frac{1}{c} + \mu \sim GG4(a,\ell,c,\mu)$
+
+
+### Usage
+
+* **dgg4(x, a, l, c, mu = 0)**  
+
+* **pgg4(q, a, l, c, mu = 0, lower.tail = TRUE, log.p = FALSE)** 
+
+* **qgg4(p, a, l, c, mu = 0, lower.tail = TRUE)** 
+
+* **rgg4(n, a, l, c, mu = 0, sequence = TRUE)**                     
+
+* **hgg4(x, a, l, c, mu = 0)**                   
+
+* **chgg4(x, a, l, c, mu = 0)**
+
+
+
+
+### Arguments
+
+* **x, q**: vector of quantiles.
+
+* **mu**:   Vector of “location” parameters. Initialized to zero if no value.
+
+* **a**:    Vector of “scale” parameters. Constrained to be different to zero.
+
+* **l**:    Vector of "shape" parameters.
+
+* **c**:    Vector of "power shape" parameters (also called "family shape" parameter).
+        power.tail: logical; if TRUE (default), probabilities are P(Y <= y),
+        otherwise, P(Y > y).
+            
+* **p**:    vector of probabilities.
+
+* **n**:    number of observations. If length(n) > 1, the length is taken to be the
+         number required.
+         
+* sequence if TRUE => for reproductive sequence else runif() for alea (to use set.seed() for reproductible results)
+            
+### References
+Amoroso, L.  (1925). Ricerche intorno alla curva dei redditi,
+*Annali de Mathematica*, **series 2 (1)**, 123-159.
+
+Crooks, G. E. (2015). *The amoroso distribution*,
+arXiv e-prints arXiv:1005.3274v2arXiv:1005.3274v2.
+
+Stacy, E. W. (1962). A generalization of the gamma distribution, *Ann. Math.
+Statist.*, **33:3**, 1187--1192.
+
+Stacy, E. W. and Mihram, G. A. (1965). Parameter estimation for a generalized gamma
+distribution, *Technometrics*, **7:3**, 349--358.
+
+Harter, H. L. (1967). Maximum-likelihood estimation of the parameters of a four-
+parameter generalized gamma population from complete and censored samples.
+*Technometrics*, **9:1**, 159--165.
+
+Johnson,N. L., Kotz, S., Balakrishnan, N. (1995).
+*Continuous univariate distribution*, 2cd edition John WILEY & Sons INC, New York.
+
+### Examples
+            
+```r
+# R code
+# ======
+
+library (AmoRosoDistrib)
+
+#=======================
+# Tests of gg4 functions
+#=======================
+#=====
+# c>0
+#=====
+dgg4(2:4, a=1, l=0.5, c=0.8)
+pgg4(2:4, 1, 0.5, 0.8)
+qgg4(seq(0.9, 0.6, -0.1), 2, 0.5, 0.8)
+rgg4(6, 1, 0.5, 0.8,sequence = F)
+p <- (1:9)/10
+pgg4(qgg4(p, 1, 2, 0.8), 1, 2, 0.8)
+## [1] 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+
+#=====
+# c<0
+#=====
+dgg4(2:4, a=1, l=0.5, c=-0.8)
+pgg4(2:4, 1, 0.5, -0.8)
+qgg4(seq(0.9, 0.6, -0.1), 2, 0.5, -0.8)
+rgg4(6, 1, 0.5, -0.8,sequence = F)
+p <- (1:9)/10
+pgg4(qgg4(p, 1, 2, -0.8), 1, 2, -0.8)
+## [1] 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+
+# with location param mu
+#========================
+dgg4(2:4, a = 2, l = 0.5, c = 0.8, mu = 1.5) # remark: q<mu so, if q=2:4 then mu < 2
+pgg4(2:4, a = 2, l = 0.5, c = 0.8, mu = 1.5) # remark: q<mu so, if q=2:4 then mu < 2
+qgg4(seq(0.9, 0.6, -0.1), a = 2, l = 0.5, c = 0.8, mu = 1.5)
+rgg4(6, a = 2, l = 0.5, c = 0.8, mu = 1.5, sequence = F)
+p <- (1:9)/10
+pgg4(qgg4(p, a = 2, l = 0.5, c = 0.8, mu = 1.5), a = 2, l = 0.5, c = 0.8, mu = 1.5)
+## [1] 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+
+set.seed(963)
+qq = qgg4(runif(100),2,3,4,5)
+c(mean(qq),sd(qq))
+## [1] 7.505230 0.368037
+
+set.seed(963)
+rr = rgg4(100,2,3,4,5,sequence = F)
+c(mean(rr),sd(rr))
+## [1] 7.505230 0.368037
+
+
+set.seed(963)
+q = sort(rr)
+pp1 = pgg4(q,2,3,4,5,lower.tail = FALSE)
+pp2 = pgg4(q,2,3,4,5,lower.tail = TRUE)
+
+
+set.seed(963)
+dd = dgg4(q,2,3,4,5)
+
+set.seed(963)
+hh = hgg4(q,2,3,4,5)
+
+set.seed(963)
+chh = chgg4(q,2,3,4,5)
+
+#===========================================
+# on most machines 5e-324 is the smallest
+# representable non-zero number
+#===========================================
+pgg4(5e-324, a = 0.001, l = 1, c = 1, mu = 0)  
+table(rgg4(1e4, a = 0.00001, l = 1, c = 1, mu = 0) == 0)/1e4
+# FALSE 
+#    1
+# at contrario
+pgamma(5e-324, 0.001)  
+table(rgamma(1e4, 0.00001) == 0)/1e4
+# FALSE   TRUE 
+# 0.5195 0.4805 
+
+```
+
+# Mimicing GG4 distribution
+
+## Problematic
+
+Fitting distributions to data is a very common task in statistics. It consists to identify a probability distribution modelling the random variable in finding parameter estimates for that distribution.
+
+If parameter estimation is easy for some distribution such as a gamma distribution ($c = 1$), the estimation becomes more complex for the other one such as GG4 distribution when the power shape parameter **$c$** is added in the density function.
+
+The difficulty increases also with the fact that different sets of parameters conduce to same density function. 
+
+Maximum likelihood is a common approach for estimating the parameters of a model, but the initialization of the parameters is essential and has a strong impact on the quality of the estimates (well known problem of local optimum).
+
+It is therefore very interesting to also propose alternative methods to estimate parameters (c.f. list below).
+But, the parameter initialization and the estimation of the power form parameter $c$ are still a real problem.
+The details of the methodological framework is presented in the article (Combes, Ng,2021)
+
+
+We propose nine approaches:
+
+1) Maximum Likelihood Estimate:                                     $fit.mle()$
+
+2) Minimun Kullback-Leibler divergence based on pdf:                $fit.mkle()$
+
+3) Minimun Jensen-Shanon divergence based on pdf:                   $fit.mjse()$
+
+4) Minimum Hellinger distance based on pdf:                         $fit.mhe$
+
+5) Minimum Squared Distance based on pdf:                           $fit.msqe()$
+
+6) Minimum Wasserstein Distance based on pdf:                       $fit.mwe()$
+
+7) Minimum Hellinger Distance based on cdf:                         $fit.mhdfe()$
+
+8) Minimum Squared Distance based on cdf:                           $fit.msqdfe()$
+
+9) Minimum Wasserstein Distance based on cdf:                       $fit.mwdfe()$
+
+
+
+
+
+describes below. But the problem of reaching a local optimum and not the global optimum is always present.
+
+## Parameter initialization
+
+
+### Description
+
+Functions to fit a sample $Y$ (univariate population -- non-censored and non-truncated data) to generalized
+gamma family. Based on the observed sample $y = (y_1, y_2, \ldots, y_{n})$, we denote the $i$-th order statistic of the observed sample as $y_{i:n}$. Based on the observed data, the parameter space can be written as two disjoint sets:
+
+* $a > 0$, $\mu \in (y_{1:n}, \infty)$, $\ell \in \mathbb{R}^{+}$, $c \in \mathbb{R} \backslash \{0\}$
+* $a < 0$, $\mu \in (-\infty, y_{n:n})$, $\ell \in \mathbb{R}^{+}$, $c \in \mathbb{R} \backslash \{0\}$
+
+Where $y_{i:n}$ is the $i$-th order statistic of the observed sample $y = (y_1, y_2, \ldots, y_{n})$.
+
+Therefore, the estimation in each of the two disjoint parameter spaces can be consider separately and then the two sets of estimates are compared. 
+
+The appraoch is based on the transformed data: 
+
+$X = Y-{\hat \mu}_{I}$ 
+
+where $X$ follows a three-parameter generalized gamma distribution $X \sim G\Gamma \left( a,\ell,c \right)$. 
+
+
+
+Let $W = X^c \sim \Gamma \left( a^c,\ell \right)$. 
+
+So, $W=X^c$ follows a gamma distribution with parameters $A= a^c$ and $\ell$ (Kleiber & Kotz, 2003)
+
+$A$ and $\ell$ can be computed easily:
+$A = \frac{E[W]}{VAR[W]}$ and $\ell= \frac{E[W]^2}{VAR[W]}$
+
+Two cases are taken into account:
+
+(1) If $a >0$ then ${\hat \mu}_{I} = p y_{1:n}$
+
+(2) If $a < 0$ then ${\hat \mu}_{I} = q y_{n:n}$ 
+
+#### Explanation:
+
+For $a > 0$, since the support of the distribution is $y > \mu$, we set the initial estimate of $\mu$ as ${\hat \mu}_{I} = p y_{1:n}$, where $p \leq 1$ and transformed the observed as data by $x_{i:n} = y_{i:n} - {\hat \mu}_{I}$. Note that when $p = 1$, $x_{1:n} = 0$ which will need to be discarded in the process of obtaining the initial estimates of parameters $a$, $l$ and $c$ to avoid computational error (e.g., taking logarithm of $x_{1:n}$ will be $-\infty$ if $x_{1:n} = 0$). Here, we suggest to use the value $p = 0.99$. 
+
+Similarly, for $a > 0$, since the support of the distribution is $y < \mu$, we set the initial estimate of $\mu$ as ${\hat \mu}_{I} = q y_{1:n}$, where $q \geq 1$ and transformed the observed as data by $x_{i:n} = y_{i:n} - {\hat \mu}_{I}$. When $q = 1$, $x_{n:n} = 0$ which will need to be discarded in the process of obtaining the initial estimates of parameters $a$, $l$ and $c$ to avoid computational error. Here, we suggest to use the value $p = 1.01$. 
+
+
+#### How to fix initial value of the C parameter ?
+
+A sequence of discrete values of $c$ is fixed and using the relation that $X^c$ follows a two-parameter gamma distribution with parameters $a^c$ and $\ell$, the method of moments estimates is used to estimate $a^c$ and $\ell$. Then, for each set of estimates of $\theta = (a, l, c, mu)$, we compute the value of the likelihood, and pick the set that gives the largest likelihood as initial value (see int.theta() function which returns  a vector of the four-parameter $(a,\ell,c,mu)$ of GG4 distribution and the value of the objective function). 
+
+### Usage
+
+**init.theta(data, data, lower = -20, upper = 20, length = 1000, a.pos = TRUE, p = 0.99, q = 1.01, pos=TRUE, p = 0.99, q = 1.01)**
+
+
+### Arguments
+
+* **data**: The observed sample
+* **lower**: The lower interval value of the discrete values of the power shape parameter $c$ except zero.
+             Default value: -20
+
+* **upper**: The upper interval value of the discrete values of the power shape parameter $c$ except zero.
+             Default value: +20
+* **length**: Size of the number of discrete values of the power shape parameter $c$ except zero.
+              Default value: 1,000
+* **a.pos**: Boolean value if pos=True then initialization of $a>0$ else initialization of $a<0$
+* **p** :    Coefficient to initialate init.mu for a>0  - Default value: 0.99
+* **q** :    Coefficient to initialate init.mu for a<0  - Default value: 1.01
+
+
+### References
+
+Combes C, Ng H. K.T. (2021)."On Parameter Estimation for Amoroso Family of Distributions", submitted to MATCOM.
+
+Kleiber C., Kotz S.(2003). “Statistical size distributions in economics and actuarial sciences”, wiley interscience, ISBN 0-471-15064-9. 
+
+### Example
+
+```r
+
+# R code
+# ======
+
+library (AmoRosoDistrib)
+
+#==============================================
+# To search the "best" parameters for initiate
+#==============================================
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Data set: Paulsen (354 observations) var = $y
+
+data("paulsen", package = "boot")
+y = paulsen$y
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Histogram and density of the dataset
+par(mfrow = c(1,1)) #plots
+hist(y, col=5, prob=TRUE)
+lines(density(y))
+length(y)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#==============================================
+# To search the "best" parameters for initiate
+#==============================================
+#
+# a>0
+# ---
+#Parameter initialization: c(a,l,c,mu)
+init.pos = init.theta(data = y, -20, 20, length = 1000, a.pos = TRUE)
+init.pos
+# Initial Estimates: a = 2.564183  l = 2.654805  c = 0.980981 mu = 2.871000 ObjectiveFctValue = -949.271431
+
+# a<0
+# ---
+
+init.neg = init.theta(data = y, -20, 20, length = 1000, a.pos = FALSE)
+init.neg
+# Initial Estimates: a = -24.25277 l = 0.214647  c = 20.0000  mu = 29.0880 ObjectiveFctValue = -950.348138
+
+```
+
+## GG4 Ditribution fitting functions
+
+### Description
+
+We explore several novel iterative parameter estimation approaches for the four-parameter Generalized Gamma
+distribution, which includes the maximum likelihood estimation and minimum distance estimation (MDE) approaches: nine functions for approximation from a sample (univariate population, non-censored non-trucated data) to theoritical model for the four-parameter Generalized Gamma family distributions.
+
+By default, direct optimization is performed using the general-purpose constraint optimization function $constrOptim$ with Nelder-Mead method available in the R package stats (R Core Team, 2020, https://www.R-project.org/) which minimizes a function subject to linear inequality constraints using an adaptive barrier algorithm.
+
+
+The MDE method (Wolfowitz, 1957) (Basu, 2011) based on nonparametric density estimation refers to a very general technique that formalizes the parameters inference problem as a problem of minimizing a distance, over the set of parameter $\theta \in \Theta$, between the model PDF $g(x; \theta)$ and some empirical density estimate, $\hat{f}_n$ obtained from a sample of size $n$. Formally, the main objective of the MDE is to minimize the distance between $g(x; \theta)$ and ${\hat f}_{n}(x)$ with respect to $\theta = (a, \ell, c, \mu)$, i.e., 
+$\theta = argmin_{\theta \in \Theta} d(g(x; \theta)|| {\hat f}_{n}(x))$, where $d(g || f)$ denotes any proper distance or divergence function that evaluates the closeness of two density functions $g$ and $f$. Wolfowitz (1957) showed that MDE is more robust to departures from underlying assumptions than maximum likelihood estimation. Millar (1984) explored the asymptotic behavior of the MDE within a general framework. The MDE approach is different from the moment-based or maximum likelihood approach and is widely studied in the literature (Basu, 2011). The classic examples of this method are the least-square and the minimum chi-square estimators.
+
+
+#### Minimum distance estimation based on probability density function 
+Based on the observed sample $y = (y_{1}, y_{2}, \ldots, y_{n})$, we consider the empirical density estimate based on the Gaussian kernel density estimate ${\hat f}_{n}$. The Gaussian kernel density estimate, ${\hat f}_{n}$, of a univariate density $f$ is (see, for example, (SheatherJones, 1991))  
+${\hat f}_{n}(x) = \frac{1}{n} \sum\limits_{i=1}^{n} \frac{K(x - y_{i}; h)}{h}$, 
+where $K(x; h) \propto \exp[- x^{2}/(2h^{2})]$ is the Gaussian kernel function, $h$ is the smoothing parameter (bandwidth) chosen to be 0.9 times the minimum of the standard deviation and the interquartile range of the sample $y$ divided by $1.34 \times n^{-1/5}$ (Silverman, 1986). 
+Specifically, we discretize the values of $x$ into $N$ points $(x_{1}, x_{2}, \ldots, x_{N})$ and minimizing the function 
+$$\sum_{k = 1}^{N} d(g(x_{k}; a, \ell, c, \mu)|| {\hat f}_{n}(x_{k})).$$ 
+
+
+#### Minimum distance estimation based on cumulative distribution function 
+Based on the observed sample $y = (y_{1}, y_{2}, \ldots, y_{n})$, the empirical cumulative distribution (CDF) function considered is ${\hat F}_{n}$ as ${\hat F}_{n}(y_{i:n}) = \frac{i - 0.5}{n}$,   
+
+for $i = 1, 2, \ldots, n$. Note that other kinds of nonparametric estimate of CDF, such as ${\hat F}_{n}(x_{i:n}) = i/(n+1)$ can be considered here.
+
+Then, the minimum distance estimate based on empirical CDF can be obtained by minimizing the function 
+$$\sum_{i = 1}^{n} \mathcal{D}(G(y_{i:n}; a, \ell, c, \mu)||{\hat F}_{n}(y_{i:n})).$$  
+
+
+
+### Usage
+
+* **fit.mle(y, theta)**:     Maximum Likelihood Estimate
+* **fit.mkle(y, theta)**:    Minimum Kullback-Leibler divergence estimate based on probability density function
+* **fit.mjse(y, theta)**:    Minimum Jensen-Shanon divergence estimate based on probability density function
+* **fit.mhe(y, theta)**:     Minimum Hellinger distance estimate based on probability density function
+* **fit.msqe(y, theta)**:    Minimum Wasserstein distance estimate based on probability density function
+* **fit.mwe(y, theta, d = 1)**: Minimum squared distance estimate based on probability density function
+* **fit.mhdfe(y, theta)**:   Minimum Hellinger distance estimate based on CDF
+* **fit.mwdfe(y, theta, d = 1)**: Minimum Wasserstein distance estimate based on CDF
+* **fit.msqdfe(y, theta)**:  Minimum squared distance estimate based on CDF
+
+
+
+
+
+### Arguments
+
+* **y**:      sample (univariate population) to fit.
+
+* **theta**:  vector of the initial values of parameters corresponding to c(a,l,c,mu) for GG4.
+
+* **d**:      Only for Wasserstein distance with $d$ is the power value
+
+
+```r
+# R code
+# ======
+
+library (AmoRosoDistrib)
+
+#==============================================
+# To search the "best" parameters for initiate
+#==============================================
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Data set: Paulsen (354 observations) var = $y
+
+data("paulsen", package = "boot")
+y = paulsen$y
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Histogram and density of the dataset
+par(mfrow = c(1,1)) #plots
+hist(y, col=5, prob=TRUE)
+lines(density(y))
+length(y)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#==============================================
+# To search the "best" parameters for initiate
+#==============================================
+#
+# a>0
+# ---
+#Parameter initialization: c(a,l,c,mu)
+init.a.pos = init.theta(data = y, -20, 20, length = 1000, a.pos = TRUE)
+init.pos = init.a.pos[1:4]
+init.pos
+# Initial Estimates: a = 2.564183     l = 2.654805  c = 0.980981   mu = 2.871000
+
+# a<0
+# ---
+
+init.a.neg = init.theta(data = y, -20, 20, length = 1000, a.pos = FALSE)
+init.neg = init.a.neg[1:4]
+init.neg
+# Initial Estimates: a = -24.252770   l = 0.214647  c = 20.000000  mu = 29.088000
+
+#===============================================================================================
+#                                        Estimation methods
+#===============================================================================================
+
+###############################################################################
+# AmoRosoDistrib: fitting function for 4-parameter GG4 Ditrib (a >0 and a<0)
+###############################################################################
+
+#===================================
+## MLE (Maximum Likelihood Estimate)
+#===================================
+mleresp <- fit.mle(y, init.pos) 
+mleresp$par
+## a = 0.002426245  l = 20.94686895 c = 0.382531015  mu = 2.234479701
+
+mleresn <- fit.mle(y, init.neg) 
+mleresn$par
+## a = -33.634088   l = 0.198693    c = 30.076152    mu = 38.396992
+
+#========================================
+##  Minimize K-L Divergence based on PDF
+#========================================
+mkleresp <- fit.mkle(y, init.pos)
+mkleresp$par
+## a = 2.4667504    l = 2.7408570  c = 0.9476054    mu = 2.8999999
+
+mkleresn <- fit.mkle(y, init.neg) 
+mkleresn$par
+## a = -34.2181615  l = 0.3080734  c = 19.8462208   mu = 39.1536820
+
+#========================================
+##  Minimize JSB Divergence based on PDF
+#========================================
+mjseresp <- fit.mjse(y, init.pos) 
+mjseresp$par
+## a = 1.3551998    l = 3.7506740  c = 0.8187294   mu = 2.8808020
+
+mjseresn <- fit.mjse(y, init.neg) 
+mjseresn$par
+## a = -35.0038521  l = 0.3136482  c = 21.0919788  mu = 39.9900611
+
+#========================================
+##  Minimize Hellinger distance based on PDF
+#========================================
+mheresp <- fit.mhe(y, init.pos) 
+mheresp$par
+## a = 4.364202       l = 1.791728     c = 1.165795    mu = 2.900000
+
+mheresn <- fit.mhe(y, init.neg) 
+mheresn$par
+## a =  -351.8544718  l = 0.6129459    c = 141.5948289 mu = 357.8981665
+
+#======================================================================
+## Wasserstein minimum distance estimation (WMDE) based on observations
+#======================================================================
+
+mWassderesp <- fit.mwe(y, init.pos, d = 4)   
+mWassderesp$par
+## a = 5.294260e-05   l = 2.745406e+01  c = 2.830769e-01  mu = 2.754875e+00
+
+mWassderesn <- fit.mwe(y, init.neg, d = 4)  
+mWassderesn$par
+## a = -113.9579336   l = 0.2599197     c = 85.5056917    mu = 118.8242511
+
+#=========================================
+##  Minimize Squared Distance based on PDF
+#=========================================
+msqeresp <- fit.msqe(y, init.pos) 
+msqeresp$par
+## a = 1.062547e-04  l = 2.718634e+01  c = 2.990940e-01   mu = 2.550182e+00
+
+msqeresn <- fit.msqe(y, init.neg) 
+msqeresn$par
+## a = -213.033779   l =  0.317779     c = 137.546791     mu = 218.108322
+
+#=================================================
+##  Minimize Hellinger distance based on CDF
+#=================================================
+mhecresp <- fit.mhdfe(y, init.pos) 
+mhecresp$par
+## a = 2.1936542    l = 2.9636780     c = 0.9896389      mu = 2.9000000
+
+mhecresn <- fit.mhdfe(y, init.neg) 
+mhecresn$par
+## a = -41.89893790 l =  0.08909993   c = 81.44715298    mu = 46.52609288
+
+#======================================================================
+## Wasserstein minimum distance estimation (WMDE) based on observations
+#======================================================================
+
+mwecresp <- fit.mwdfe(y, init.pos, d = 4)     
+mwecresp$par
+## a = 0.7686587     l = 4.4828182    c = 0.7036489      mu = 2.9000000
+
+mwecresn <- fit.mwdfe(y, init.neg, d = 4)   
+mwecresn$par
+## a = -104.0840008  l = 0.1201594    c = 167.1148750    mu = 108.8814356
+
+#=========================================
+##  Minimize Squared Distance based on CDF
+#=========================================
+msqdferesp <- fit.msqdfe(y, init.pos) 
+msqdferesp$par
+## a = 0.2130186     l = 6.9872929    c = 0.5732915      mu = 2.9000000
+
+msqdferesn <- fit.msqdfe(y, init.neg) 
+msqdferesn$par
+## a = -154.4870964  l = 0.1613791    c = 192.8715452    mu = 159.3548577
+
+
+#=============================================================================
+## PAULSEN: Plotting the fitted PDFs with the best objective function results
+#=============================================================================
+
+hist(y, prob = T, main = "Historgam and fitted PDFs of the Paulsen's Data (n = 354)")
+#lines(density(y), xlim = (-0.2:0.2), lwd = 3, col = "red")
+xx <- seq(2.3, 35, length = 10000)
+
+points(xx, dgg4(xx, init.pos[1], init.pos[2], init.pos[3], init.pos[4]), type = "l", lwd = 2, col = 1, lty = 1)
+points(xx, dgg4(xx, init.neg[1], init.neg[2], init.neg[3], init.neg[4]), type = "l", lwd = 2, col = 1, lty = 2)
+
+points(xx, dgg4(xx, mleresn$par[1], mleresn$par[2], mleresn$par[3], mleresn$par[4]), type = "l", lwd = 2, col = 2, lty = 1)
+points(xx, dgg4(xx, mkleresn$par[1], mkleresn$par[2], mkleresn$par[3], mkleresn$par[4]), type = "l", lwd = 2, col = 3, lty = 1)
+points(xx, dgg4(xx, mjseresn$par[1], mjseresn$par[2], mjseresn$par[3], mjseresn$par[4]), type = "l", lwd = 2, col = 4, lty = 1)
+points(xx, dgg4(xx, mheresn$par[1], mheresn$par[2], mheresn$par[3], mheresn$par[4]), type = "l", lwd = 2, col = 5, lty = 1)
+points(xx, dgg4(xx, mWassderesn$par[1], mWassderesn$par[2], mWassderesn$par[3], mWassderesn$par[4]), type = "l", lwd = 2, col = 6, lty = 1)
+points(xx, dgg4(xx, msqeresn$par[1], msqeresn$par[2], msqeresn$par[3], msqeresn$par[4]), type = "l", lwd = 2, col = 7, lty = 1)
+points(xx, dgg4(xx, mhecresp$par[1], mhecresp$par[2], mhecresp$par[3], mhecresp$par[4]), type = "l", lwd = 2, col = 5, lty = 2)
+points(xx, dgg4(xx, mwecresn$par[1], mwecresn$par[2], mwecresn$par[3], mwecresn$par[4]), type = "l", lwd = 2, col = 6, lty = 2)
+points(xx, dgg4(xx, msqdferesn$par[1], msqdferesn$par[2], msqdferesn$par[3], msqdferesn$par[4]), type = "l", lwd = 2, col = 7, lty = 2)
+
+
+legend("topright", legend = c("Initial Est.(+)", "Initial Est.(-)",
+                              "MLE", "MDE-KL", "MDE-JSB", "MDE-HD", "MDE-WD", "MDE-SE", "MDE-HDC", "MDE-WDC", "MDE-SEC"),
+       lwd = 2,
+       col = c(1, 1, 2:7, 5:7),
+       lty = c(1, 2, rep(1, 6), 2, 2, 2))
+box()
+
+#######################################################################################
+
+```
+
+### Optimization
+Optimization is performed using stats::constrOptim() function. For one-dimensional problems the Nelder-Mead method is used and for multi-dimensional problems the BFGS method.
+This function minimises a function subject to linear inequality constraints using an adaptive barrier algorithm and the usage is:
+
+**constrOptim(theta, f, grad, ui, ci, mu = 1e-04, control = list(),
+            method = if(is.null(grad)) "Nelder-Mead" else "BFGS",
+            outer.iterations = 100, outer.eps = 1e-05, ...,
+            hessian = FALSE)**
+            
+For fitting with Monte Carlo simulation, in order to identify the number of times the method could not be estimated with respect to the initial parameters, the usage is:
+
+**tryCatch(constrOptim(theta, f, grad, ui, ci, mu = 1e-04, control = list(),
+            method = if(is.null(grad)) "Nelder-Mead" else "BFGS",
+            outer.iterations = 100, outer.eps = 1e-05, ...,
+            hessian = FALSE),
+            error=function(e) {NA})**
+
+
+
+### References
+
+Basu, A., Shioya, H., Park, C.(2011).
+*Statistical Inference: The Minimum Distance Approach*. 
+Chanseok Chapman & Hall/CRC. 409 pages. hardcover ISBN : 978‐1‐4200‐9965‐2
+
+
+Gibbs, A. L.  and Su, F. E. (2002). On Choosing and Bounding Probability
+Metrics. *International Statistical Review*, **70(3)**, 419–-435.
+
+Millar P.W. (1984). A general approach to the optimality of minimum distance estimators. *Trans. Amer. Math. Soc.*, **286:1**, 377--418
+
+R Core Team, R: A Language and Environment for Statistical Computing, R Foundation for Statistical Computing, Vienna, Austria (2020). URL https://www.R-project.org/
+
+Reem, D., Reich, S., and De Pierro, A. (2018). Re-examination of Bregman functions and new properties of their divergences. *Optimization*, 1–-70. doi:10.1080/02331934.2018.1543295 
+
+Sheather S. J., Jones M. C. (1991). A reliable data-based bandwidth selection method for kernel density estimation, *Journal of the Royal Statistical Society. Series B (Methodological)*, **53:3**, 683--690.
+URL http://www.jstor.org/stable/2345597
+
+Silverman B. W. (1986). Density Estimation, Chapman and Hall, London.
+
+Wolfowitz, J. (1957). The minimum distance method. *The Annals of Mathematical Statistics*, Institute of Mathematical Statistics, **28:1**, 75-–88. doi:10.1214/aoms/1177707038. ISSN 0020-3157. Retrieved February 18, 2013.
+
+
+
+## Graphic functions
+
+### Usage
+
+* **qqplot(y, theta, seed = 1)**: Quantile-Quantile (Q-Q) plot with regression line and 1-1 line
+* **densityplot(y, theta)**: Density plots observations vs GG4 model
+* **ddhplot(y, theta, seed = 1)**: First, Q-Q plot of the sample y and data generated from GG4 distribution with the parameter vector $\theta$ along with graphs of their densities, shaded so that the corresponding percentiles are clearly matched up. Second, The corresponding histogram.
+
+### Arguments
+
+* **y**:     sample (univariate population).
+
+* **theta**: Vector of the parameter value corresponding to c(a,l,c,mu) for GG4 model.
+
+* **seed**:  Seed initialization for random generation from GG4 distribution with the parameter vector $\theta$.
+
+
+
+
+
+```r
+library (AmoRosoDistrib)
+
+#======================================================================
+# Data set c < 0 and a < 0 (a.pos=F for AmoRosoDistrib::init.theta() )
+#======================================================================
+
+set.seed(1) # seed for reproductible results regarding sequence = FALSE
+y = rgg4(300,-2.0,3.0,-2.75,4,sequence = F)
+
+
+initial.theta = AmoRosoDistrib::init.theta(data = y, -20, 20, length = 1000, a.pos = FALSE, q = 1.1)
+theta = initial.theta[1:4]
+theta
+# Initial Estimates: a =  -0.0007805819 l = 32.8148974082  c = 0.5005005005  mu = 3.4023419231
+
+#====================================================
+##  Minimize Kullback-Leibler Divergence based on PDF
+#====================================================
+mkleres <- AmoRosoDistrib::fit.mkle(y, theta)
+mkleres$par
+## a = -0.0015054 l = 37.0043894  c = 0.5531973  mu = 3.5922516
+
+
+#==================================================
+## QQ-plot with 1-1 line and regression line
+#==================================================
+
+qqplot(y, theta = c(mkleres$par[1], mkleres$par[2], mkleres$par[3], mkleres$par[4]), seed = 1)
+
+#==================================================
+## Density plots observations versus GG4 model
+#==================================================
+
+densityplot(y, theta = c(mkleres$par[1], mkleres$par[2], mkleres$par[3], mkleres$par[4]), xlim = (-1.4:1.4))
+
+#==================================================
+## Histogram and density plot comparisons
+#==================================================
+
+ddhplot(y, theta = c(mkleres$par[1], mkleres$par[2], mkleres$par[3], mkleres$par[4]), seed = 1)
+
+
+
+````
+
+  
+## Others functions
+
+### Description
+
+The package also proposes different description functions:
+
+
+* Moment estimated from the 4-parameters Generalized Gamma distribution: **moment_theo()**
+
+* Variance estimated from the 4-parameters Generalized Gamma distribution: **var_theo()**
+
+* Kurtosis of a univariate population: **kurtosis()**   
+
+* Skewness of a data population (measure of symmetry): **skewness()**	    
+
+
+
+**Mean** and **Variance** from the **4-parameter generalized gamma distribution** are respectively:
+$$E[Y^k] = \frac{a^k \Gamma \left(\ell + \frac{1}{c}\right)}{\Gamma(\ell)}$$ 
+
+$$V[Y] = a^2 \frac{ \Gamma \left(\ell + \frac{2}{c}\right)\Gamma(\ell) - \left[\Gamma \left(\ell + \frac{1}{c}\right) \right]^2 }{\Gamma(\ell)^2}$$
+
+
+The $r^{th}$ moment of $Y (r = 1, 2, ...)$ is:
+
+$$E[Y^r] = a^r \frac{\Gamma \left( \frac{c \ell + r }{c} \right)}{\Gamma(\ell)}$$  
+
+if  $\frac{r}{c}>-\ell$ and $\infty$ otherwise
+
+
+
+The **centred moment** estimated from a univariate population (Except for the first moment which corresponds to the mean).
+
+
+The **kurtosis** formulaes are: 
+
+* kurtosis(sample): $\frac {n (n+1)}{(n-1)(n-2) (n-3)} \sum_{i=1}^n \left( \frac{y_i-\overline{y}}{\frac {1}{n}\sum_{i=1}^n (y_i-\overline{y})^2} \right)^4$
+
+* kurtosis(fisher): $\frac{(n+1)(n-1)}{(n-2)(n-3)} \left[ \frac{\sum_{i=1}^n \frac{y_{i}^4}{n}}{\left( \frac{y_{i}}{n} \right)^2} - \frac{3(n-1)}{n+1}\right]$
+
+
+The **skewness** formulaes are: 
+
+* skewness(sample): $\frac {n}{(n-1)(n-2)} \sum_{i=1}^n \left( \frac{y_i-\overline{y}}{\frac {1}{n}\sum_{i=1}^n (y_i-\overline{y})^2} \right)^3$
+
+* skewness(fisher): $\frac {\frac{\sqrt{n(n-1)}}{n-2} \sum_{i=1}^n \left( \frac{y^3}{n} \right)}{\sum_{i=1}^n \left(\frac{y^2}{n} \right)^{\frac{3}{2}}}$
+
+### Usage
+
+* **moment_theo(theta, k)**
+* **var_theo(theta)**
+* **moment(data, k)**
+* **kurtosis(data, type = "sample")**
+* **skweness(data, type = "sample")**
+
+
+### Arguments
+
+* **data**:  a sample (set of observations)
+* **theta**: vector of 4-parameters of GG4 distribution: c(a,l,c,mu)
+* **k**:     k order to be computed
+* **type**:  a character string coding -- "sample" is computed from sample and "fisher" corresponds to fisher formula.
+
+# Fitting Left-trancated and right censored data  to GG4 distribution models
+
+This topic is in progress!!!
+
+## GG4-truncated functions
+
+### Description
+
+Two functions are proposed:
+
+* Truncated probability density function (TPDF) of four-parameter Generalized Gamma Distribution
+  
+* Truncated-Cumulative Distribution function (TCDF) of four-parameter Generalized Gamma Distribution
+
+### Usage
+
+* **trunc.dgg4(q, a, $\ell$, c, mu = 0, trt,  log.p = FALSE)**: GG4 TPDF
+* **trunc.pgg4(q, a, $\ell$, c, mu = 0, trt, lower.tail = TRUE, log.p = FALSE)**:  GG4 TCDF
+
+### Arguments
+
+  * **q**: Vector of quantiles
+  
+  * **trt**: Vector of quantiles for truncated cfd
+  
+  * **a**: Scale parameter
+  
+  * **$\ell$**: Shape parameter
+  
+  * **c**: Power shape parameter
+  
+  * **mu**: Location parameter
+  
+  * **lower.tail**: Logical; if TRUE (default), probabilities are P(X≤x), otherwise, P(X>x)
+  
+  * **log.p**: Logical; if TRUE, probabilities p are given as log(p) only if a,l and c are strictly positives
+
+## Parameter estimation for GG4 distribution based on left‐truncated and right‐censore ddata
