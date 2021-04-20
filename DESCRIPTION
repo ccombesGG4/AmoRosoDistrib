@@ -1,0 +1,44 @@
+Package: AmoRosoDistrib
+Title: Generation and fitting parametric Generalized Gamma family Distributions proposed by Amoroso
+Version: 0.0.0.9000
+Authors@R: c(person("Catherine", "Combes",
+           email = "combes@univ-st.etienne.fr", 
+           role = c("aut","cre")),
+           person("Hon Keung Tony", "Ng",
+           role = c("aut"))
+            )
+Maintainer: Hon Keung Tony Ng <ngh@mail.smu.edu>
+            Catherine Combes <catherine.combes@univ-st-etienne.fr>
+Description: Functions for generation and fitting the Generalized 
+             Gamma family models for Location, Scale, shape, 
+             and Power Shape (family shape) introduced by Amoroso 
+             (1925)
+             method-approach: iterative and incremental numerical 
+             method for minimum distance estimation
+             Data type: univariate non-censored data
+             Reference: Amoroso, L. (1925). 
+             Richerche intorno alla curve die redditi. 
+             Ann. Mat. Pura Appl. 21, 123-159.
+Depends: R (>= 3.5)
+License: GPL-3
+Repository: CRAN
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Suggests: 
+    knitr,
+    knitcitations,
+    rmarkdown,
+VignetteBuilder: knitr
+Imports: 
+    stats,
+    graphics,
+    extRemes,
+    evd,
+    stats4,
+    transport,
+    grDevices,
+    tidyverse,
+    ggplot2,
+    UsingR,
+    mixtools
