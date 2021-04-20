@@ -17,3 +17,8 @@ Afterwards, run these commands:
     library(devtools)
 
     install_github("ccombesGG4/AmoRosoDistrib")
+
+------------
+How to use?
+------------
+See 'vignettes' directory
