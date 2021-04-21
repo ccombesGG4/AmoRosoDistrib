@@ -10,12 +10,12 @@ Installation
 
 On RStudio, install package devtools and curl:
 
-    install.packages("devtools") install.packages("curl")
+    install.packages("devtools") 
+    install.packages("curl")
 
 Afterwards, run these commands:
 
     library(devtools)
-
     install_github("ccombesGG4/AmoRosoDistrib")
 
 ------------
