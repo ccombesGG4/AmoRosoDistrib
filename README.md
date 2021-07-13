@@ -4,9 +4,10 @@ Package: AmoRoDistrib
 
 R package for fitting Amoroso probability distribution family
 
-See the article:
-"On Parameter Estimation for Amoroso Family ofDistributions". Catherine Combes and Hon Keung Tony Ng.
+----------------------------------------------------------------------------------------------------------------------
+See the article: "On Parameter Estimation for Amoroso Family ofDistributions". Catherine Combes and Hon Keung Tony Ng.
 To appear in Mathematics and Computers in Simulation - Journal - Elsevier.
+------------------------------------------------------------------------------------------------------------------------
 
 ------------
 Installation
