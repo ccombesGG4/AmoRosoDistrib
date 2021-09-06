@@ -10,7 +10,9 @@ See the article:
 "On Parameter Estimation for Amoroso Family of Distributions". Catherine Combes and Hon Keung Tony Ng.
 Volume 191, January 2022, Pages 309-327, in Mathematics and Computers in Simulation - Journal - Elsevier. https://doi.org/10.1016/j.matcom.2021.07.004
 
-Citation to BibTeX:
+-------------------
+Citation to BibTeX: 
+-------------------
 @article{COMBES2022309,
 title = {On parameter estimation for Amoroso family of distributions},
 journal = {Mathematics and Computers in Simulation},
